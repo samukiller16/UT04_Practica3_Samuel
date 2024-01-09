@@ -7,15 +7,10 @@ class BaseException extends Error {
     }
   }
 }
-//Excepción de valor inválido
-class InvalidValueException extends BaseException {
-  constructor(param, value, fileName, lineNumber) {
-    super(
-      `Error: The paramenter ${param} has an invalid value. (${param}: ${value})`,
-      fileName,
-      lineNumber
-    );
-    this.param = param;
-    this.name = "EmptyValueException";
+//Excepción acceso inválido a constructor
+class InvalidAccessConstructorException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("Constructor can’t be called as a function.", fileName, lineNumber);
+    this.name = "InvalidAccessConstructorException";
   }
 }
