@@ -14,3 +14,33 @@ class InvalidAccessConstructorException extends BaseException {
     this.name = "InvalidAccessConstructorException";
   }
 }
+
+class InvalidCategoryException extends BaseException {
+    constructor(fileName, lineNumber) {
+        super("La categoría no puede ser null o no es un objeto Category.", fileName, lineNumber);
+        this.name = "InvalidCategoryException";
+    }
+}
+
+class ExistingCategoryException extends BaseException {
+    constructor(fileName, lineNumber) {
+        super("La categoría ya existe", fileName, lineNumber);
+        this.name = "InvalidCategoryException";
+    }
+}
+
+
+
+class InvalidMenuException extends BaseException {
+    constructor(fileName, lineNumber) {
+        super("El menú no puede ser null o no es un objeto Menu.", fileName, lineNumber);
+        this.name = "ExistingCategoryException";
+    }
+}
+
+class ExistingCategoryException extends BaseException {
+    constructor(fileName, lineNumber) {
+        super("El menú ya existe", fileName, lineNumber);
+        this.name = "InvalidCategoryException";
+    }
+}

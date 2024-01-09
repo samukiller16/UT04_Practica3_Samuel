@@ -273,7 +273,10 @@ const RestaurantsManager = (function () {
           yield this.#restaurants[i];
         }
       }
-      
+
+      addCategory(){
+        
+      }
     }
 
     let restMan = new RestaurantsManagerObj();
