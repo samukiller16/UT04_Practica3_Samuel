@@ -231,10 +231,49 @@ const RestaurantsManager = (function () {
   function init() {
     //Inicialización del Singleton
     class RestaurantsManagerObj {
-      constructor() {
+      #name;
+      #categories = [];
+      #allergens = [];
+      #dishes = [];
+      #menus = [];
+      #restaurants = [];
+
+      constructor(name, categories, allergens, dishes, menus, restaurants) {
         //La función se invoca con el operador new
         if (!new.target) throw new InvalidAccessConstructorException();
+
+        this.#name = name;
+        this.#categories = categories;
+        this.#allergens = allergens;
+        this.#dishes = dishes;
+        this.#menus = menus;
+        this.#restaurants = restaurants;
       }
+
+      *getCategories() {
+        for (let i = 0; i < this.#categories.length; i++) {
+          yield this.#categories[i];
+        }
+      }
+
+      *getMenus() {
+        for (let i = 0; i < this.#menus.length; i++) {
+          yield this.#menus[i];
+        }
+      }
+
+      *getAllergens() {
+        for (let i = 0; i < this.#allergens.length; i++) {
+          yield this.#allergens[i];
+        }
+      }
+
+      *getRestaurants() {
+        for (let i = 0; i < this.#restaurants.length; i++) {
+          yield this.#restaurants[i];
+        }
+      }
+      
     }
 
     let restMan = new RestaurantsManagerObj();
