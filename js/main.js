@@ -220,6 +220,36 @@ class Restaurant {
   }
 
   toString() {
-    return `Nombre del restaurante: ${this.#name} | Descripción: ${this.#description} | Ubicación: ${this.#location.toString()}`;
+    return `Nombre del restaurante: ${this.#name} | Descripción: ${
+      this.#description
+    } | Ubicación: ${this.#location.toString()}`;
   }
 }
+
+const RestaurantsManager = (function () {
+  let instantiated;
+  function init() {
+    //Inicialización del Singleton
+    class RestaurantsManagerObj {
+      constructor() {
+        //La función se invoca con el operador new
+        if (!new.target) throw new InvalidAccessConstructorException();
+      }
+    }
+
+    let restMan = new RestaurantsManagerObj();
+    Object.freeze(restMan);
+
+    return restMan;
+  }
+  return {
+    // Devuelve un objeto con el método getInstance
+    getInstance: function () {
+      if (!instantiated) {
+        //Si la variable instantiated es undefined, primera ejecución, ejecuta init.
+        instantiated = init(); //instantiated contiene el objeto único
+      }
+      return instantiated; //Si ya está asignado devuelve la asignación.
+    },
+  };
+})();
