@@ -1,3 +1,4 @@
+// Objeto Dish
 class Dish {
   #name = "";
   #description = "";
@@ -44,10 +45,181 @@ class Dish {
   }
 
   stringIngredientes() {
-    return this.#ingredients.join(', ');
+    return this.#ingredients.join(", ");
   }
 
   toString() {
-    return `Nombre: ${this.#name} | Descripción: ${this.#description} | Ingredientes: ${this.stringIngredientes()} | Imagen: ${this.#image}`;
+    return `Nombre: ${this.#name} | Descripción: ${
+      this.#description
+    } | Ingredientes: ${this.stringIngredientes()} | Imagen: ${this.#image}`;
+  }
+}
+
+// Objeto Category
+class Category {
+  #name = "";
+  #description = "";
+
+  constructor(name, description) {
+    this.#name = name;
+    this.#description = description;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  set name(newName) {
+    this.#name = newName;
+  }
+
+  get description() {
+    return this.#description;
+  }
+
+  set description(newDescription) {
+    this.#description = newDescription;
+  }
+
+  toString() {
+    return `Nombre de la categoría: ${this.#name} | Descripción: ${
+      this.#description
+    }`;
+  }
+}
+
+// Objeto Allergen
+class Allergen {
+  #name = "";
+  #description = "";
+
+  constructor(name, description) {
+    this.#name = name;
+    this.#description = description;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  set name(newName) {
+    this.#name = newName;
+  }
+
+  get description() {
+    return this.#description;
+  }
+
+  set description(newDescription) {
+    this.#description = newDescription;
+  }
+
+  toString() {
+    return `Nombre del alérgeno: ${this.#name} | Descripción: ${
+      this.#description
+    }`;
+  }
+}
+
+// Objeto Menu
+class Menu {
+  #name = "";
+  #description = "";
+
+  constructor(name, description) {
+    this.#name = name;
+    this.#description = description;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  set name(newName) {
+    this.#name = newName;
+  }
+
+  get description() {
+    return this.#description;
+  }
+
+  set description(newDescription) {
+    this.#description = newDescription;
+  }
+
+  toString() {
+    return `Nombre del menú: ${this.#name} | Descripción: ${this.#description}`;
+  }
+}
+
+// Objeto Coordinate
+class Coordinate {
+  #latitude;
+  #longitude;
+
+  constructor(latitude, longitude) {
+    this.#latitude = latitude;
+    this.#longitude = longitude;
+  }
+
+  get latitude() {
+    return this.#latitude;
+  }
+
+  set latitude(newLatitude) {
+    this.#latitude = newLatitude;
+  }
+
+  get longitude() {
+    return this.#longitude;
+  }
+
+  set longitude(newLongitude) {
+    this.#longitude = newLongitude;
+  }
+
+  toString() {
+    return `Latitud: ${this.#latitude} | Longitud: ${this.#longitude}`;
+  }
+}
+
+// Objeto Restaurant
+class Restaurant {
+  #name = "";
+  #description = "";
+  #location;
+
+  constructor(name, description, location) {
+    this.#name = name;
+    this.#description = description;
+    this.#location = location;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  set name(newName) {
+    this.#name = newName;
+  }
+
+  get description() {
+    return this.#description;
+  }
+
+  set description(newDescription) {
+    this.#description = newDescription;
+  }
+
+  get location() {
+    return this.#location;
+  }
+
+  set location(newLocation) {
+    this.#location = newLocation;
+  }
+
+  toString() {
+    return `Nombre del restaurante: ${this.#name} | Descripción: ${this.#description} | Ubicación: ${this.#location.toString()}`;
   }
 }
