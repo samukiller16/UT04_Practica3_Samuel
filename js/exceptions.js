@@ -38,7 +38,7 @@ class InvalidMenuException extends BaseException {
     }
 }
 
-class ExistingCategoryException extends BaseException {
+class ExistingMenuException extends BaseException {
     constructor(fileName, lineNumber) {
         super("El menú ya existe", fileName, lineNumber);
         this.name = "InvalidCategoryException";

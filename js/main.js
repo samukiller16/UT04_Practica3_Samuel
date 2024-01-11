@@ -43,7 +43,7 @@ class Dish {
   set image(newImage) {
     this.#image = newImage;
   }
-
+  //Método para pasar los ingredientes a un string
   stringIngredientes() {
     return this.#ingredients.join(", ");
   }
@@ -226,6 +226,7 @@ class Restaurant {
   }
 }
 
+// RestaurantsManager como singleton, solo se podrá instanciar una vez, si se trata de instanciar más se devolverá la misma instancia
 const RestaurantsManager = (function () {
   let instantiated;
   function init() {
@@ -249,39 +250,53 @@ const RestaurantsManager = (function () {
         this.#menus = menus;
         this.#restaurants = restaurants;
       }
-
+      //Devuelve un iterador de categorías
       *getCategories() {
         for (let i = 0; i < this.#categories.length; i++) {
           yield this.#categories[i];
         }
       }
-
+      //Devuelve un iterador de menús
       *getMenus() {
         for (let i = 0; i < this.#menus.length; i++) {
           yield this.#menus[i];
         }
       }
-
+      //Devuelve un iterador de alérgenos
       *getAllergens() {
         for (let i = 0; i < this.#allergens.length; i++) {
           yield this.#allergens[i];
         }
       }
-
+      //Devuelve un iterador de restaurantes
       *getRestaurants() {
         for (let i = 0; i < this.#restaurants.length; i++) {
           yield this.#restaurants[i];
         }
       }
 
-      addCategory(){
-        
+      //Añadimos una categoría al array categories
+      addCategory(category) {
+        // Si no es una categoría o es nula, la categoría es inválida
+        if (!(category instanceof Category) || category == null) {
+          throw new InvalidCategoryException();
+        } else if (
+          // Si ya existe, lanzamos otra excepción
+          this.#categories.some(
+            (existingCategory) => existingCategory.name === category.name
+          )
+        ) {
+          throw new ExistingCategoryException();
+        } else {
+          this.#categories.push(category);
+        }
       }
     }
-
+    // Creamos nuevo RestaurantsManager
     let restMan = new RestaurantsManagerObj();
+    // Lo congelamos para que no se modifique
     Object.freeze(restMan);
-
+    // Lo devolvemos
     return restMan;
   }
   return {
