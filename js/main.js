@@ -276,20 +276,23 @@ const RestaurantsManager = (function () {
       }
 
       //Añadimos una categoría al array categories
-      addCategory(category) {
-        // Si no es una categoría o es nula, la categoría es inválida
-        if (!(category instanceof Category) || category == null) {
-          throw new InvalidCategoryException();
-        } else if (
-          // Si ya existe, lanzamos otra excepción
-          this.#categories.some(
-            (existingCategory) => existingCategory.name === category.name
-          )
-        ) {
-          throw new ExistingCategoryException();
-        } else {
-          this.#categories.push(category);
+      addCategory(...categoriesadded) {
+        for (const category of categoriesadded) {
+          // Si no es una categoría o es nula, la categoría es inválida
+          if (!(category instanceof Category) || category == null) {
+            throw new InvalidCategoryException();
+          } else if (
+            // Si ya existe, lanzamos otra excepción
+            this.#categories.some(
+              (existingCategory) => existingCategory.name === category.name
+            )
+          ) {
+            throw new ExistingCategoryException();
+          } else {
+            this.#categories.push(category);
+          }
         }
+        return this;
       }
     }
     // Creamos nuevo RestaurantsManager
