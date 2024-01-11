@@ -6,6 +6,9 @@ class Dish {
   #image = "";
 
   constructor(name, description, ingredients, image) {
+    if (!name || name == "") {
+      throw new InvalidValueException();
+    }
     this.#name = name;
     this.#description = description;
     this.#ingredients = ingredients;
@@ -61,6 +64,9 @@ class Category {
   #description = "";
 
   constructor(name, description) {
+    if (!name || name == "") {
+      throw new InvalidValueException();
+    }
     this.#name = name;
     this.#description = description;
   }
@@ -94,6 +100,9 @@ class Allergen {
   #description = "";
 
   constructor(name, description) {
+    if (!name || name == "") {
+      throw new InvalidValueException();
+    }
     this.#name = name;
     this.#description = description;
   }
@@ -127,6 +136,9 @@ class Menu {
   #description = "";
 
   constructor(name, description) {
+    if (!name || name == "") {
+      throw new InvalidValueException();
+    }
     this.#name = name;
     this.#description = description;
   }
@@ -158,6 +170,14 @@ class Coordinate {
   #longitude;
 
   constructor(latitude, longitude) {
+    if (
+      !latitude ||
+      !longitude ||
+      typeof latitude !== "number" ||
+      typeof longitude !== "number"
+    ) {
+      throw new InvalidValueException();
+    }
     this.#latitude = latitude;
     this.#longitude = longitude;
   }

@@ -7,6 +7,15 @@ class BaseException extends Error {
     }
   }
 }
+
+//Excepción acceso inválido a constructor
+class InvalidValueException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("No se ha introducido un valor obligatorio", fileName, lineNumber);
+    this.name = "InvalidValueException";
+  }
+}
+
 //Excepción acceso inválido a constructor
 class InvalidAccessConstructorException extends BaseException {
   constructor(fileName, lineNumber) {
