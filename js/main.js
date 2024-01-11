@@ -271,41 +271,39 @@ const RestaurantsManager = (function () {
         this.#restaurants = restaurants;
       }
       //Devuelve un iterador de categorías
-      *getCategories() {
+      *getterCategories() {
         for (let i = 0; i < this.#categories.length; i++) {
           yield this.#categories[i];
         }
       }
       //Devuelve un iterador de menús
-      *getMenus() {
+      *getterMenus() {
         for (let i = 0; i < this.#menus.length; i++) {
           yield this.#menus[i];
         }
       }
       //Devuelve un iterador de alérgenos
-      *getAllergens() {
+      *getterAllergens() {
         for (let i = 0; i < this.#allergens.length; i++) {
           yield this.#allergens[i];
         }
       }
       //Devuelve un iterador de restaurantes
-      *getRestaurants() {
+      *getterRestaurants() {
         for (let i = 0; i < this.#restaurants.length; i++) {
           yield this.#restaurants[i];
         }
       }
 
       //Añadimos una categoría al array categories
-      addCategory(...categoriesadded) {
-        for (const category of categoriesadded) {
+      addCategory(...categories) {
+        for (const category of categories) {
           // Si no es una categoría o es nula, la categoría es inválida
           if (!(category instanceof Category) || category == null) {
             throw new InvalidCategoryException();
           } else if (
             // Si ya existe, lanzamos otra excepción
-            this.#categories.some(
-              (existingCategory) => existingCategory.name === category.name
-            )
+            this.getPositionCategory(category) != -1
           ) {
             throw new ExistingCategoryException();
           } else {
@@ -314,6 +312,107 @@ const RestaurantsManager = (function () {
         }
         return this;
       }
+
+      getPositionCategory(category) {
+        return this.#categories.findIndex(
+          (existingCategory) => existingCategory.name === category.name
+        );
+      }
+
+      removeCategory(...categories) {
+        for (const category of categories) {
+          const index = this.getPositionCategory(category);
+
+          if (index === -1) {
+            // La categoría no existe, lanzar una excepción
+            throw new UnregisteredCategoryException();
+          }
+
+          // Eliminar la categoría del array
+          this.#categories.splice(index, 1);
+        }
+        return this;
+      }
+
+      getPositionMenu(menu){
+        return this.#menus.findIndex(
+          (menuObj) => menuObj.menu.name === menu.name
+        );
+      }
+
+      addMenu(...menus){
+        for (const menu of menus) {
+          // Si no es un menu o es nulo, el menú es inválido
+          if (!(menu instanceof Menu) || menu == null) {
+            throw new InvalidMenuException();
+          } else if (
+            // Si ya existe, lanzamos otra excepción
+            this.getPositionMenu(menu) != -1
+          ) {
+            throw new ExistingMenuException();
+          } else {
+            this.#menus.push({
+              menu,
+              dishes: []
+            });
+          }
+        }
+        return this;
+      }
+
+      removeMenu(...menus) {
+        for (const menu of menus) {
+          const index = this.getPositionMenu(menu);
+
+          if (index === -1) {
+            // El menú no existe, lanzar una excepción
+            throw new UnregisteredMenuException();
+          }
+
+          // Eliminar menú del array
+          this.#menus.splice(index, 1);
+        }
+        return this;
+      }
+
+      getPositionAllergen(allergen){
+        return this.#allergens.findIndex(
+          (existingAllergen) => existingAllergen.name === allergen.name
+        );
+      }
+
+      addAllergen(...allergens){
+        for (const allergen of allergens) {
+          // Si no es un allergen o es nulo, el allergen es inválido
+          if (!(allergen instanceof Allergen) || allergen == null) {
+            throw new InvalidAllergenException();
+          } else if (
+            // Si ya existe, lanzamos otra excepción
+            this.getPositionAllergen(allergen) != -1
+          ) {
+            throw new ExistingAllergenException();
+          } else {
+            this.#allergens.push(allergen);
+          }
+        }
+        return this;
+      }
+
+      removeAllergen(...allergens) {
+        for (const allergen of allergens) {
+          const index = this.getPositionAllergen(allergen);
+
+          if (index === -1) {
+            // El menú no existe, lanzar una excepción
+            throw new UnregisteredAllergenException();
+          }
+
+          // Eliminar menú del array
+          this.#allergens.splice(index, 1);
+        }
+        return this;
+      }
+      
     }
     // Creamos nuevo RestaurantsManager
     let restMan = new RestaurantsManagerObj();

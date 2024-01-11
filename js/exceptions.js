@@ -25,31 +25,76 @@ class InvalidAccessConstructorException extends BaseException {
 }
 
 class InvalidCategoryException extends BaseException {
-    constructor(fileName, lineNumber) {
-        super("La categoría no puede ser null o no es un objeto Category.", fileName, lineNumber);
-        this.name = "InvalidCategoryException";
-    }
+  constructor(fileName, lineNumber) {
+    super(
+      "La categoría no puede ser null o no es un objeto Category.",
+      fileName,
+      lineNumber
+    );
+    this.name = "InvalidCategoryException";
+  }
 }
 
 class ExistingCategoryException extends BaseException {
-    constructor(fileName, lineNumber) {
-        super("La categoría ya existe", fileName, lineNumber);
-        this.name = "InvalidCategoryException";
-    }
+  constructor(fileName, lineNumber) {
+    super("La categoría ya existe", fileName, lineNumber);
+    this.name = "InvalidCategoryException";
+  }
 }
 
-
+class UnregisteredCategoryException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("La categoría no está registrada", fileName, lineNumber);
+    this.name = "UnregisteredCategoryException";
+  }
+}
 
 class InvalidMenuException extends BaseException {
-    constructor(fileName, lineNumber) {
-        super("El menú no puede ser null o no es un objeto Menu.", fileName, lineNumber);
-        this.name = "ExistingCategoryException";
-    }
+  constructor(fileName, lineNumber) {
+    super(
+      "El menú no puede ser null o no es un objeto Menu.",
+      fileName,
+      lineNumber
+    );
+    this.name = "InvalidMenuException";
+  }
 }
 
 class ExistingMenuException extends BaseException {
-    constructor(fileName, lineNumber) {
-        super("El menú ya existe", fileName, lineNumber);
-        this.name = "InvalidCategoryException";
-    }
+  constructor(fileName, lineNumber) {
+    super("El menú ya existe", fileName, lineNumber);
+    this.name = "ExistingMenuException";
+  }
+}
+
+class UnregisteredMenuException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("El menú no está registrado", fileName, lineNumber);
+    this.name = "UnregisteredMenuException";
+  }
+}
+
+class InvalidAllergenException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super(
+      "El alérgeno no puede ser null o no es un objeto Menu.",
+      fileName,
+      lineNumber
+    );
+    this.name = "InvalidAllergenException";
+  }
+}
+
+class ExistingAllergenException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("El alérgeno ya existe", fileName, lineNumber);
+    this.name = "ExistingAllergenException";
+  }
+}
+
+class UnregisteredAllergenException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("El alérgeno no está registrado", fileName, lineNumber);
+    this.name = "UnregisteredAllergenException";
+  }
 }
