@@ -207,7 +207,7 @@ class Coordinate {
 class Restaurant {
   #name = "";
   #description = "";
-  #location;
+  #location = null;
 
   constructor(name, description, location) {
     this.#name = name;
@@ -295,6 +295,12 @@ const RestaurantsManager = (function () {
         }
       }
 
+      getPositionCategory(category) {
+        return this.#categories.findIndex(
+          (existingCategory) => existingCategory.name === category.name
+        );
+      }
+
       //Añadimos una categoría al array categories
       addCategory(...categories) {
         for (const category of categories) {
@@ -313,12 +319,6 @@ const RestaurantsManager = (function () {
         return this;
       }
 
-      getPositionCategory(category) {
-        return this.#categories.findIndex(
-          (existingCategory) => existingCategory.name === category.name
-        );
-      }
-
       removeCategory(...categories) {
         for (const category of categories) {
           const index = this.getPositionCategory(category);
@@ -334,13 +334,13 @@ const RestaurantsManager = (function () {
         return this;
       }
 
-      getPositionMenu(menu){
+      getPositionMenu(menu) {
         return this.#menus.findIndex(
           (menuObj) => menuObj.menu.name === menu.name
         );
       }
 
-      addMenu(...menus){
+      addMenu(...menus) {
         for (const menu of menus) {
           // Si no es un menu o es nulo, el menú es inválido
           if (!(menu instanceof Menu) || menu == null) {
@@ -353,7 +353,7 @@ const RestaurantsManager = (function () {
           } else {
             this.#menus.push({
               menu,
-              dishes: []
+              dishes: [],
             });
           }
         }
@@ -375,13 +375,13 @@ const RestaurantsManager = (function () {
         return this;
       }
 
-      getPositionAllergen(allergen){
+      getPositionAllergen(allergen) {
         return this.#allergens.findIndex(
           (existingAllergen) => existingAllergen.name === allergen.name
         );
       }
 
-      addAllergen(...allergens){
+      addAllergen(...allergens) {
         for (const allergen of allergens) {
           // Si no es un allergen o es nulo, el allergen es inválido
           if (!(allergen instanceof Allergen) || allergen == null) {
@@ -412,7 +412,82 @@ const RestaurantsManager = (function () {
         }
         return this;
       }
-      
+
+      getPositionDish(dish) {
+        return this.#dishes.findIndex(
+          (dishObj) => dishObj.dish.name === dish.name
+        );
+      }
+
+      addDish(...dishes) {
+        for (const dish of dishes) {
+          // Si no es un dish o es nulo, el dish es inválido
+          if (!(dish instanceof Dish) || dish == null) {
+            throw new InvalidDishException();
+          } else if (
+            // Si ya existe, lanzamos otra excepción
+            this.getPositionDish(dish) != -1
+          ) {
+            throw new ExistingDishException();
+          } else {
+            this.#dishes.push({ dish, categories: [], allergens: [] });
+          }
+        }
+        return this;
+      }
+
+      removeDish(...dishes) {
+        for (const dish of dishes) {
+          const index = this.getPositionDish(dish);
+
+          if (index === -1) {
+            // El menú no existe, lanzar una excepción
+            throw new UnregisteredDishException();
+          }
+
+          // Eliminar menú del array
+          this.#dishes.splice(index, 1);
+        }
+        return this;
+      }
+
+      getPositionRestaurant(restaurant) {
+        return this.#restaurants.findIndex(
+          (existingRestaurant) => existingRestaurant.name === restaurant.name
+        );
+      }
+
+      addRestaurant(...restaurants) {
+        for (const rest of restaurants) {
+          // Si no es un allergen o es nulo, el allergen es inválido
+          if (!(rest instanceof Restaurant) || rest == null) {
+            throw new InvalidRestaurantException();
+          } else if (
+            // Si ya existe, lanzamos otra excepción
+            this.getPositionRestaurant(rest) != -1
+          ) {
+            throw new ExistingRestaurantException();
+          } else {
+            this.#restaurants.push(rest);
+          }
+        }
+        return this;
+      }
+
+      removeRestaurant(...restaurants) {
+        for (const rest of restaurants) {
+          const index = this.getPositionRestaurant(rest);
+
+          if (index === -1) {
+            // El menú no existe, lanzar una excepción
+            throw new UnregisteredRestaurantException();
+          }
+
+          // Eliminar menú del array
+          this.#restaurants.splice(index, 1);
+        }
+        return this;
+      }
     }
     // Creamos nuevo RestaurantsManager
     let restMan = new RestaurantsManagerObj();

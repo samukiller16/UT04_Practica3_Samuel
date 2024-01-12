@@ -98,3 +98,53 @@ class UnregisteredAllergenException extends BaseException {
     this.name = "UnregisteredAllergenException";
   }
 }
+
+class InvalidDishException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super(
+      "El plato no puede ser null o no es un objeto Dish.",
+      fileName,
+      lineNumber
+    );
+    this.name = "InvalidDishException";
+  }
+}
+
+class ExistingDishException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("El plato ya existe", fileName, lineNumber);
+    this.name = "ExistingDishException";
+  }
+}
+
+class UnregisteredDishException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("El plato no está registrado", fileName, lineNumber);
+    this.name = "UnregisteredDishException";
+  }
+}
+
+class InvalidRestaurantException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super(
+      "El restaurante no puede ser null o no es un objeto Restaurant.",
+      fileName,
+      lineNumber
+    );
+    this.name = "InvalidRestaurantException";
+  }
+}
+
+class ExistingRestaurantException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("El restaurante ya existe", fileName, lineNumber);
+    this.name = "ExistingRestaurantException";
+  }
+}
+
+class UnregisteredRestaurantException extends BaseException {
+  constructor(fileName, lineNumber) {
+    super("El restaurante no está registrado", fileName, lineNumber);
+    this.name = "UnregisteredRestaurantException";
+  }
+}
