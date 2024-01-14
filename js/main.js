@@ -252,14 +252,21 @@ const RestaurantsManager = (function () {
   function init() {
     //Inicialización del Singleton
     class RestaurantsManagerObj {
-      #name;
+      #name = "";
       #categories = [];
       #allergens = [];
       #dishes = [];
       #menus = [];
       #restaurants = [];
 
-      constructor(name, categories, allergens, dishes, menus, restaurants) {
+      constructor(
+        name = "RestManager",
+        categories = [],
+        allergens = [],
+        dishes = [],
+        menus = [],
+        restaurants = []
+      ) {
         //La función se invoca con el operador new
         if (!new.target) throw new InvalidAccessConstructorException();
 
@@ -292,6 +299,12 @@ const RestaurantsManager = (function () {
       *getterRestaurants() {
         for (let i = 0; i < this.#restaurants.length; i++) {
           yield this.#restaurants[i];
+        }
+      }
+      //Devuelve un iterador de platos, añadido para ver los platos al testear
+      *getterDishes() {
+        for (let i = 0; i < this.#dishes.length; i++) {
+          yield this.#dishes[i];
         }
       }
 
@@ -487,6 +500,359 @@ const RestaurantsManager = (function () {
           this.#restaurants.splice(index, 1);
         }
         return this;
+      }
+
+      assignCategoryToDish(dish, ...categoriesAdd) {
+        if (!(dish instanceof Dish) || dish == null) {
+          throw new InvalidDishException();
+        }
+        let indexDish = this.getPositionDish(dish);
+
+        if (indexDish === -1) {
+          // El plato no existe, lo añadimos
+          this.addDish(dish);
+          indexDish = this.getPositionDish(dish);
+        }
+        for (const category of categoriesAdd) {
+          if (!(category instanceof Category) || category == null) {
+            throw new InvalidCategoryException();
+          }
+          let indexCat = this.getPositionCategory(category);
+
+          if (indexCat === -1) {
+            // La categoría no existe, la añadimos
+            this.addCategory(category);
+          }
+
+          this.#dishes[indexDish].categories.push(category);
+        }
+        return this;
+      }
+
+      deassignCategoryToDish(dish, ...categoriesAdd) {
+        if (!(dish instanceof Dish) || dish == null) {
+          throw new InvalidDishException();
+        }
+        let indexDish = this.getPositionDish(dish);
+
+        if (indexDish === -1) {
+          // El plato no existe, excepción
+          throw new UnregisteredDishException();
+        }
+        for (const category of categoriesAdd) {
+          if (!(category instanceof Category) || category == null) {
+            throw new InvalidCategoryException();
+          }
+          let indexCat = this.getPositionCategory(category);
+
+          if (indexCat === -1) {
+            // La categoría no existe, excepción
+            throw new UnregisteredCategoryException();
+          }
+
+          this.#dishes[indexDish].categories.splice(indexCat, 1);
+        }
+        return this;
+      }
+
+      assignAllergenToDish(dish, ...allergensAdd) {
+        if (!(dish instanceof Dish) || dish == null) {
+          throw new InvalidDishException();
+        }
+        let indexDish = this.getPositionDish(dish);
+
+        if (indexDish === -1) {
+          // El plato no existe, lo añadimos
+          this.addDish(dish);
+          indexDish = this.getPositionDish(dish);
+        }
+        for (const allergen of allergensAdd) {
+          if (!(allergen instanceof Allergen) || allergen == null) {
+            throw new InvalidAllergenException();
+          }
+          let indexAllergen = this.getPositionAllergen(allergen);
+
+          if (indexAllergen === -1) {
+            // El alérgeno no existe, la añadimos
+            this.addAllergen(allergen);
+          }
+
+          this.#dishes[indexDish].allergens.push(allergen);
+        }
+        return this;
+      }
+
+      deassignAllergenToDish(dish, ...allergensAdd) {
+        if (!(dish instanceof Dish) || dish == null) {
+          throw new InvalidDishException();
+        }
+        let indexDish = this.getPositionDish(dish);
+
+        if (indexDish === -1) {
+          // El plato no existe, excepción
+          throw new UnregisteredDishException();
+        }
+        for (const allergen of allergensAdd) {
+          if (!(allergen instanceof Allergen) || allergen == null) {
+            throw new InvalidAllergenException();
+          }
+          let indexAllergen = this.getPositionAllergen(allergen);
+
+          if (indexAllergen === -1) {
+            // El alérgeno no existe, excepción
+            throw new UnregisteredAllergenException();
+          }
+
+          this.#dishes[indexDish].allergens.splice(indexAllergen, 1);
+        }
+        return this;
+      }
+
+      assignDishToMenu(menu, ...dishesAdd) {
+        if (!(menu instanceof Menu) || menu == null) {
+          throw new InvalidDishException();
+        }
+        let indexMenu = this.getPositionMenu(menu);
+
+        if (indexMenu === -1) {
+          // El menú no existe, lo añadimos
+          this.addMenu(menu);
+          indexMenu = this.getPositionMenu(menu);
+        }
+        for (const dish of dishesAdd) {
+          if (!(dish instanceof Dish) || dish == null) {
+            throw new InvalidDishException();
+          }
+          let indexDish = this.getPositionDish(dish);
+
+          if (indexDish === -1) {
+            // El plato no existe, lo añadimos
+            this.addDish(dish);
+            indexDish = this.getPositionDish(dish);
+          }
+
+          this.#menus[indexMenu].dishes.push(this.#dishes[indexDish]);
+        }
+        return this;
+      }
+
+      deassignDishToMenu(menu, ...dishesAdd) {
+        if (!(menu instanceof Menu) || menu == null) {
+          throw new InvalidDishException();
+        }
+        let indexMenu = this.getPositionMenu(menu);
+
+        if (indexMenu === -1) {
+          // El menú no existe, excepción
+          throw new UnregisteredMenuException();
+        }
+        for (const dish of dishesAdd) {
+          if (!(dish instanceof Dish) || dish == null) {
+            throw new InvalidDishException();
+          }
+          let indexDish = this.getPositionDish(dish);
+
+          if (indexDish === -1) {
+            // El plato no existe, excepción
+            throw new UnregisteredDishException();
+          }
+          //Borramos de nuestro array de menús
+          //Dentro del objeto literal con el menú indicado
+          //El objeto literal con el plato
+          this.#menus[indexMenu].dishes.splice(indexDish, 1);
+        }
+        return this;
+      }
+
+      changeDishesPositionsInMenu(menu, dish1, dish2) {
+        if (!(menu instanceof Menu) || menu == null) {
+          throw new InvalidDishException();
+        }
+        let indexMenu = this.getPositionMenu(menu);
+
+        if (indexMenu === -1) {
+          // El menú no existe, excepción
+          throw new UnregisteredMenuException();
+        }
+
+        if (
+          !(dish1 instanceof Dish) ||
+          dish1 == null ||
+          !(dish2 instanceof Dish) ||
+          dish2 == null
+        ) {
+          throw new InvalidDishException();
+        }
+        let indexDish1 = this.getPositionDish(dish1);
+        let indexDish2 = this.getPositionDish(dish2);
+
+        if (indexDish1 === -1 || indexDish2 === -1) {
+          // El plato no existe, excepción
+          throw new UnregisteredDishException();
+        }
+
+        // Intercambiar las posiciones de los platos en el menú
+        const tempDish = this.#menus[indexMenu].dishes[indexDish1];
+        this.#menus[indexMenu].dishes[indexDish1] =
+          this.#menus[indexMenu].dishes[indexDish2];
+        this.#menus[indexMenu].dishes[indexDish2] = tempDish;
+
+        return this;
+      }
+
+      // Función para filtrar platos por categoría
+      *getDishesInCategory(category, orden) {
+        if (!(category instanceof Category) || category == null) {
+          throw new InvalidCategoryException();
+        }
+
+        const indexCategory = this.getPositionCategory(category);
+
+        if (indexCategory === -1) {
+          // La categoría no existe, lanzar una excepción
+          throw new UnregisteredCategoryException();
+        }
+
+        // Nuevo array usando filter para obtener un array nuevo
+        // Con some comprobamos si el objeto tiene alguna categoría
+        // Cuyo nombre sea igual a la categoría pasada a la función
+        const dishesInCategory = this.#dishes.filter((dishObj) => {
+          return dishObj.categories.some((cat) => cat.name === category.name);
+        });
+
+        // Ordenar el array de platos si nos han pasado orden
+        if (orden && typeof orden === "function") {
+          dishesInCategory.sort(orden);
+        }
+
+        // Devolvemos cada plato de la categoría
+        for (const dish of dishesInCategory) {
+          yield dish;
+        }
+      }
+
+      // Nueva función para obtener platos con alérgeno
+      *getDishesWithAllergen(allergen, orden) {
+        if (!(allergen instanceof Allergen) || allergen == null) {
+          throw new InvalidAllergenException();
+        }
+
+        const indexAllergen = this.getPositionAllergen(allergen);
+
+        if (indexAllergen === -1) {
+          // El alérgeno no existe, lanzar una excepción
+          throw new UnregisteredAllergenException();
+        }
+
+        // Nuevo array usando filter para obtener un array nuevo
+        // Con some comprobamos si el objeto tiene algún alérgeno
+        // Cuyo nombre sea igual al alérgeno pasado a la función
+        const dishesWithAllergen = this.#dishes.filter((dishObj) => {
+          return dishObj.allergens.some((alg) => alg.name === allergen.name);
+        });
+
+        // Ordenar el array de platos si nos han pasado orden
+        if (orden && typeof orden === "function") {
+          dishesWithAllergen.sort(orden);
+        }
+
+        // Devolvemos cada plato con el alérgeno
+        for (const dish of dishesWithAllergen) {
+          yield dish;
+        }
+      }
+
+      // En el pdf pone que pasemos un Dish, pero parece ser una confusión
+      // Pues queremos ver los platos que cumplan cierto criterio,
+      // Por lo que no tiene sentido pasarle el Dish
+      *findDishes(callback, orden) {
+        if (typeof callback !== "function") {
+          throw new Error("Callback no es una función.");
+        }
+
+        // Nuevo array usando filter para obtener un array nuevo
+        // Con some comprobamos si el objeto cumple el criterio definido por el callback
+        const foundDishes = this.#dishes.filter((dishObj) => callback(dishObj));
+
+        // Ordenar el array de platos si nos han pasado orden
+        if (orden && typeof orden === "function") {
+          foundDishes.sort(orden);
+        }
+
+        // Devolvemos un iterador para los platos que cumplen el criterio
+        for (const dish of foundDishes) {
+          yield dish;
+        }
+      }
+
+      createDish(name, description, ingredients, image) {
+        // Buscar si ya existe un plato con el mismo nombre
+        const existingDishObj = this.#dishes.find(
+          (dishObj) => dishObj.dish.name === name
+        );
+        // Ternaria, si existingDish tiene valor, cogemos el objeto plato, si no, null
+        const existingDish = existingDishObj ? existingDishObj.dish : null;
+        if (existingDish != null) {
+          // Si ya existe, devolver el objeto Dish existente
+          return existingDish.dish;
+        } else {
+          // Si no existe, crear un nuevo objeto Dish
+          const newDish = new Dish(name, description, ingredients, image);
+          return newDish;
+        }
+      }
+
+      createMenu(name, description) {
+        const existingMenuObj = this.#menus.find(
+          (menuObj) => menuObj.menu.name === name
+        );
+        const existingMenu = existingMenuObj ? existingMenuObj.menu : null;
+
+        if (existingMenu !== null) {
+          return existingMenu;
+        } else {
+          const newMenu = new Menu(name, description);
+          return newMenu;
+        }
+      }
+
+      createAllergen(name, description) {
+        const existingAllergen = this.#allergens.find(
+          (allergen) => allergen.name === name
+        );
+
+        if (existingAllergen !== undefined) {
+          return existingAllergen;
+        } else {
+          const newAllergen = new Allergen(name, description);
+          return newAllergen;
+        }
+      }
+
+      createCategory(name, description) {
+        const existingCategory = this.#categories.find(
+          (category) => category.name === name
+        );
+
+        if (existingCategory !== undefined) {
+          return existingCategory;
+        } else {
+          const newCategory = new Category(name, description);
+          return newCategory;
+        }
+      }
+
+      createRestaurant(name, description, location) {
+        const existingRestaurant = this.#restaurants.find(
+          (restaurant) => restaurant.name === name
+        );
+
+        if (existingRestaurant !== undefined) {
+          return existingRestaurant;
+        } else {
+          const newRestaurant = new Restaurant(name, description, location);
+          return newRestaurant;
+        }
       }
     }
     // Creamos nuevo RestaurantsManager
