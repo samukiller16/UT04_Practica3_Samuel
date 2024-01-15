@@ -148,3 +148,24 @@ class UnregisteredRestaurantException extends BaseException {
     this.name = "UnregisteredRestaurantException";
   }
 }
+
+export {
+  BaseException,
+  InvalidValueException,
+  InvalidAccessConstructorException,
+  InvalidCategoryException,
+  ExistingCategoryException,
+  UnregisteredCategoryException,
+  InvalidMenuException,
+  ExistingMenuException,
+  UnregisteredMenuException,
+  InvalidAllergenException,
+  ExistingAllergenException,
+  UnregisteredAllergenException,
+  InvalidDishException,
+  ExistingDishException,
+  UnregisteredDishException,
+  InvalidRestaurantException,
+  ExistingRestaurantException,
+  UnregisteredRestaurantException
+};

@@ -1,168 +1,23 @@
-// Objeto Dish
-class Dish {
-  #name = "";
-  #description = "";
-  #ingredients = [];
-  #image = "";
-
-  constructor(name, description, ingredients, image) {
-    if (!name || name == "") {
-      throw new InvalidValueException();
-    }
-    this.#name = name;
-    this.#description = description;
-    this.#ingredients = ingredients;
-    this.#image = image;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  set name(newName) {
-    this.#name = newName;
-  }
-
-  get description() {
-    return this.#description;
-  }
-
-  set description(newDescription) {
-    this.#description = newDescription;
-  }
-
-  get ingredients() {
-    return this.#ingredients;
-  }
-
-  set ingredients(newIngredients) {
-    this.#ingredients = newIngredients;
-  }
-
-  get image() {
-    return this.#image;
-  }
-
-  set image(newImage) {
-    this.#image = newImage;
-  }
-  //Método para pasar los ingredientes a un string
-  stringIngredientes() {
-    return this.#ingredients.join(", ");
-  }
-
-  toString() {
-    return `Nombre: ${this.#name} | Descripción: ${
-      this.#description
-    } | Ingredientes: ${this.stringIngredientes()} | Imagen: ${this.#image}`;
-  }
-}
-
-// Objeto Category
-class Category {
-  #name = "";
-  #description = "";
-
-  constructor(name, description) {
-    if (!name || name == "") {
-      throw new InvalidValueException();
-    }
-    this.#name = name;
-    this.#description = description;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  set name(newName) {
-    this.#name = newName;
-  }
-
-  get description() {
-    return this.#description;
-  }
-
-  set description(newDescription) {
-    this.#description = newDescription;
-  }
-
-  toString() {
-    return `Nombre de la categoría: ${this.#name} | Descripción: ${
-      this.#description
-    }`;
-  }
-}
-
-// Objeto Allergen
-class Allergen {
-  #name = "";
-  #description = "";
-
-  constructor(name, description) {
-    if (!name || name == "") {
-      throw new InvalidValueException();
-    }
-    this.#name = name;
-    this.#description = description;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  set name(newName) {
-    this.#name = newName;
-  }
-
-  get description() {
-    return this.#description;
-  }
-
-  set description(newDescription) {
-    this.#description = newDescription;
-  }
-
-  toString() {
-    return `Nombre del alérgeno: ${this.#name} | Descripción: ${
-      this.#description
-    }`;
-  }
-}
-
-// Objeto Menu
-class Menu {
-  #name = "";
-  #description = "";
-
-  constructor(name, description) {
-    if (!name || name == "") {
-      throw new InvalidValueException();
-    }
-    this.#name = name;
-    this.#description = description;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  set name(newName) {
-    this.#name = newName;
-  }
-
-  get description() {
-    return this.#description;
-  }
-
-  set description(newDescription) {
-    this.#description = newDescription;
-  }
-
-  toString() {
-    return `Nombre del menú: ${this.#name} | Descripción: ${this.#description}`;
-  }
-}
+import {
+  BaseException,
+  InvalidValueException,
+  InvalidAccessConstructorException,
+  InvalidCategoryException,
+  ExistingCategoryException,
+  UnregisteredCategoryException,
+  InvalidMenuException,
+  ExistingMenuException,
+  UnregisteredMenuException,
+  InvalidAllergenException,
+  ExistingAllergenException,
+  UnregisteredAllergenException,
+  InvalidDishException,
+  ExistingDishException,
+  UnregisteredDishException,
+  InvalidRestaurantException,
+  ExistingRestaurantException,
+  UnregisteredRestaurantException,
+} from "./exceptions.js";
 
 // Objeto Coordinate
 class Coordinate {
@@ -202,52 +57,219 @@ class Coordinate {
     return `Latitud: ${this.#latitude} | Longitud: ${this.#longitude}`;
   }
 }
-
-// Objeto Restaurant
-class Restaurant {
-  #name = "";
-  #description = "";
-  #location = null;
-
-  constructor(name, description, location) {
-    this.#name = name;
-    this.#description = description;
-    this.#location = location;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  set name(newName) {
-    this.#name = newName;
-  }
-
-  get description() {
-    return this.#description;
-  }
-
-  set description(newDescription) {
-    this.#description = newDescription;
-  }
-
-  get location() {
-    return this.#location;
-  }
-
-  set location(newLocation) {
-    this.#location = newLocation;
-  }
-
-  toString() {
-    return `Nombre del restaurante: ${this.#name} | Descripción: ${
-      this.#description
-    } | Ubicación: ${this.#location.toString()}`;
-  }
-}
-
 // RestaurantsManager como singleton, solo se podrá instanciar una vez, si se trata de instanciar más se devolverá la misma instancia
 const RestaurantsManager = (function () {
+  // Objeto Dish
+  class Dish {
+    #name = "";
+    #description = "";
+    #ingredients = [];
+    #image = "";
+
+    constructor(name, description, ingredients, image) {
+      if (!name || name == "") {
+        throw new InvalidValueException();
+      }
+      this.#name = name;
+      this.#description = description;
+      this.#ingredients = ingredients;
+      this.#image = image;
+    }
+
+    get name() {
+      return this.#name;
+    }
+
+    set name(newName) {
+      this.#name = newName;
+    }
+
+    get description() {
+      return this.#description;
+    }
+
+    set description(newDescription) {
+      this.#description = newDescription;
+    }
+
+    get ingredients() {
+      return this.#ingredients;
+    }
+
+    set ingredients(newIngredients) {
+      this.#ingredients = newIngredients;
+    }
+
+    get image() {
+      return this.#image;
+    }
+
+    set image(newImage) {
+      this.#image = newImage;
+    }
+    //Método para pasar los ingredientes a un string
+    stringIngredientes() {
+      return this.#ingredients.join(", ");
+    }
+
+    toString() {
+      return `Nombre: ${this.#name} | Descripción: ${
+        this.#description
+      } | Ingredientes: ${this.stringIngredientes()} | Imagen: ${this.#image}`;
+    }
+  }
+
+  // Objeto Category
+  class Category {
+    #name = "";
+    #description = "";
+
+    constructor(name, description) {
+      if (!name || name == "") {
+        throw new InvalidValueException();
+      }
+      this.#name = name;
+      this.#description = description;
+    }
+
+    get name() {
+      return this.#name;
+    }
+
+    set name(newName) {
+      this.#name = newName;
+    }
+
+    get description() {
+      return this.#description;
+    }
+
+    set description(newDescription) {
+      this.#description = newDescription;
+    }
+
+    toString() {
+      return `Nombre de la categoría: ${this.#name} | Descripción: ${
+        this.#description
+      }`;
+    }
+  }
+
+  // Objeto Allergen
+  class Allergen {
+    #name = "";
+    #description = "";
+
+    constructor(name, description) {
+      if (!name || name == "") {
+        throw new InvalidValueException();
+      }
+      this.#name = name;
+      this.#description = description;
+    }
+
+    get name() {
+      return this.#name;
+    }
+
+    set name(newName) {
+      this.#name = newName;
+    }
+
+    get description() {
+      return this.#description;
+    }
+
+    set description(newDescription) {
+      this.#description = newDescription;
+    }
+
+    toString() {
+      return `Nombre del alérgeno: ${this.#name} | Descripción: ${
+        this.#description
+      }`;
+    }
+  }
+
+  // Objeto Menu
+  class Menu {
+    #name = "";
+    #description = "";
+
+    constructor(name, description) {
+      if (!name || name == "") {
+        throw new InvalidValueException();
+      }
+      this.#name = name;
+      this.#description = description;
+    }
+
+    get name() {
+      return this.#name;
+    }
+
+    set name(newName) {
+      this.#name = newName;
+    }
+
+    get description() {
+      return this.#description;
+    }
+
+    set description(newDescription) {
+      this.#description = newDescription;
+    }
+
+    toString() {
+      return `Nombre del menú: ${this.#name} | Descripción: ${
+        this.#description
+      }`;
+    }
+  }
+
+  // Objeto Restaurant
+  class Restaurant {
+    #name = "";
+    #description = "";
+    #location = null;
+
+    constructor(name, description, location) {
+      this.#name = name;
+      this.#description = description;
+      this.#location = location;
+    }
+
+    get name() {
+      return this.#name;
+    }
+
+    set name(newName) {
+      this.#name = newName;
+    }
+
+    get description() {
+      return this.#description;
+    }
+
+    set description(newDescription) {
+      this.#description = newDescription;
+    }
+
+    get location() {
+      return this.#location;
+    }
+
+    set location(newLocation) {
+      this.#location = newLocation;
+    }
+
+    toString() {
+      return `Nombre del restaurante: ${this.#name} | Descripción: ${
+        this.#description
+      } | Ubicación: ${this.#location.toString()}`;
+    }
+  }
+
   let instantiated;
   function init() {
     //Inicialización del Singleton
@@ -258,6 +280,12 @@ const RestaurantsManager = (function () {
       #dishes = [];
       #menus = [];
       #restaurants = [];
+      // Flyweight, lo usaremos para crear dichos objetos
+      #productConstructors = {
+        Category,
+        Allergen,
+        Menu,
+      };
 
       constructor(
         name = "RestManager",
@@ -307,7 +335,7 @@ const RestaurantsManager = (function () {
           yield this.#dishes[i];
         }
       }
-
+      //Habrá métodos similares para obtener posición de los objetos
       getPositionCategory(category) {
         return this.#categories.findIndex(
           (existingCategory) => existingCategory.name === category.name
@@ -331,7 +359,7 @@ const RestaurantsManager = (function () {
         }
         return this;
       }
-
+      // Borrar Category
       removeCategory(...categories) {
         for (const category of categories) {
           const index = this.getPositionCategory(category);
@@ -347,12 +375,14 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Método para obtener posición
       getPositionMenu(menu) {
         return this.#menus.findIndex(
           (menuObj) => menuObj.menu.name === menu.name
         );
       }
 
+      // Añadimos objeto literal con Menu y array de objetos literales de Dish
       addMenu(...menus) {
         for (const menu of menus) {
           // Si no es un menu o es nulo, el menú es inválido
@@ -373,6 +403,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Borrar objeto literal de Menu
       removeMenu(...menus) {
         for (const menu of menus) {
           const index = this.getPositionMenu(menu);
@@ -388,12 +419,14 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Método para obtener posición
       getPositionAllergen(allergen) {
         return this.#allergens.findIndex(
           (existingAllergen) => existingAllergen.name === allergen.name
         );
       }
 
+      // Añadir allergen (objeto sin añadidos)
       addAllergen(...allergens) {
         for (const allergen of allergens) {
           // Si no es un allergen o es nulo, el allergen es inválido
@@ -411,6 +444,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      //Borrar allergen
       removeAllergen(...allergens) {
         for (const allergen of allergens) {
           const index = this.getPositionAllergen(allergen);
@@ -426,12 +460,14 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Método para obtener posición
       getPositionDish(dish) {
         return this.#dishes.findIndex(
           (dishObj) => dishObj.dish.name === dish.name
         );
       }
 
+      //Añadimo objeto literal con Dish array de objetos Category y array de Allergen
       addDish(...dishes) {
         for (const dish of dishes) {
           // Si no es un dish o es nulo, el dish es inválido
@@ -449,6 +485,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      //Borramos el objeto literal
       removeDish(...dishes) {
         for (const dish of dishes) {
           const index = this.getPositionDish(dish);
@@ -464,12 +501,14 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      //Método para obtener posición
       getPositionRestaurant(restaurant) {
         return this.#restaurants.findIndex(
           (existingRestaurant) => existingRestaurant.name === restaurant.name
         );
       }
 
+      // Añadimos objeto Restaurant
       addRestaurant(...restaurants) {
         for (const rest of restaurants) {
           // Si no es un allergen o es nulo, el allergen es inválido
@@ -487,6 +526,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Borramos objeto Restaurant
       removeRestaurant(...restaurants) {
         for (const rest of restaurants) {
           const index = this.getPositionRestaurant(rest);
@@ -502,6 +542,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Asignamos categorías a un plato determinado
       assignCategoryToDish(dish, ...categoriesAdd) {
         if (!(dish instanceof Dish) || dish == null) {
           throw new InvalidDishException();
@@ -529,6 +570,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Desasignamos categorías a un plato
       deassignCategoryToDish(dish, ...categoriesAdd) {
         if (!(dish instanceof Dish) || dish == null) {
           throw new InvalidDishException();
@@ -555,6 +597,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Asignamos alérgenos a un plato
       assignAllergenToDish(dish, ...allergensAdd) {
         if (!(dish instanceof Dish) || dish == null) {
           throw new InvalidDishException();
@@ -582,6 +625,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Desasignamos alérgenos a un plato
       deassignAllergenToDish(dish, ...allergensAdd) {
         if (!(dish instanceof Dish) || dish == null) {
           throw new InvalidDishException();
@@ -608,6 +652,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Asignamos plato a menú
       assignDishToMenu(menu, ...dishesAdd) {
         if (!(menu instanceof Menu) || menu == null) {
           throw new InvalidDishException();
@@ -636,6 +681,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Desasignamos platos a un menú
       deassignDishToMenu(menu, ...dishesAdd) {
         if (!(menu instanceof Menu) || menu == null) {
           throw new InvalidDishException();
@@ -664,6 +710,7 @@ const RestaurantsManager = (function () {
         return this;
       }
 
+      // Cambiamos la posición de dos platos del menú
       changeDishesPositionsInMenu(menu, dish1, dish2) {
         if (!(menu instanceof Menu) || menu == null) {
           throw new InvalidDishException();
@@ -785,6 +832,8 @@ const RestaurantsManager = (function () {
         }
       }
 
+      //Funciones para creaciones de Objetos:
+
       createDish(name, description, ingredients, image) {
         // Buscar si ya existe un plato con el mismo nombre
         const existingDishObj = this.#dishes.find(
@@ -811,7 +860,7 @@ const RestaurantsManager = (function () {
         if (existingMenu !== null) {
           return existingMenu;
         } else {
-          const newMenu = new Menu(name, description);
+          const newMenu = new this.#productConstructors.Menu(name, description);
           return newMenu;
         }
       }
@@ -824,7 +873,10 @@ const RestaurantsManager = (function () {
         if (existingAllergen !== undefined) {
           return existingAllergen;
         } else {
-          const newAllergen = new Allergen(name, description);
+          const newAllergen = new this.#productConstructors.Allergen(
+            name,
+            description
+          );
           return newAllergen;
         }
       }
@@ -837,7 +889,10 @@ const RestaurantsManager = (function () {
         if (existingCategory !== undefined) {
           return existingCategory;
         } else {
-          const newCategory = new Category(name, description);
+          const newCategory = new this.#productConstructors.Category(
+            name,
+            description
+          );
           return newCategory;
         }
       }
@@ -871,5 +926,10 @@ const RestaurantsManager = (function () {
       }
       return instantiated; //Si ya está asignado devuelve la asignación.
     },
+    Category: Category.name,
+    Allergen: Allergen.name,
+    Menu: Menu.name,
   };
 })();
+
+export { RestaurantsManager, Coordinate };
