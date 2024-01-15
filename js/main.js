@@ -369,6 +369,15 @@ const RestaurantsManager = (function () {
             throw new UnregisteredCategoryException();
           }
 
+          const dishesToRemove = this.findDishes((dish) =>
+            dish.categories.includes(category)
+          );
+
+          // Desasignar la categoría a cada plato encontrado
+          for (const dishObj of dishesToRemove) {
+            this.deassignCategoryToDish(dishObj.dish, category);
+          }
+
           // Eliminar la categoría del array
           this.#categories.splice(index, 1);
         }
@@ -454,6 +463,15 @@ const RestaurantsManager = (function () {
             throw new UnregisteredAllergenException();
           }
 
+          // Desasignar el alérgeno de todos los platos
+          const dishesToRemove = this.findDishes((dishObj) =>
+            dishObj.allergens.includes(allergen)
+          );
+
+          for (const dishObj of dishesToRemove) {
+            this.deassignAllergenToDish(dishObj.dish, allergen);
+          }
+
           // Eliminar menú del array
           this.#allergens.splice(index, 1);
         }
@@ -494,6 +512,18 @@ const RestaurantsManager = (function () {
             // El menú no existe, lanzar una excepción
             throw new UnregisteredDishException();
           }
+
+          // Desasignar plato de los menús en los que se encuentre
+          for (const menuObj of this.#menus) {
+            const indexDish = menuObj.dishes.findIndex(
+              (dishObj) => dishObj.dish.name === dish.name
+            );
+      
+            if (indexDish !== -1) {
+              menuObj.dishes.splice(indexDish, 1);
+            }
+          }
+          
 
           // Eliminar menú del array
           this.#dishes.splice(index, 1);
@@ -684,7 +714,7 @@ const RestaurantsManager = (function () {
       // Desasignamos platos a un menú
       deassignDishToMenu(menu, ...dishesAdd) {
         if (!(menu instanceof Menu) || menu == null) {
-          throw new InvalidDishException();
+          throw new InvalidMenuException();
         }
         let indexMenu = this.getPositionMenu(menu);
 
